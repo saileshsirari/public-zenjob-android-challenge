@@ -50,5 +50,12 @@ Tasks
 
 ***Good luck and have fun with the challenge!***
 
+Changes
+-------------
+1. Added clean architecture with mvvm
+2. Used paging library for paging
+3. Added Hilt and Coroutines
+4. Updated UI   
+5. Test cases
 
 PS: Feedback on the challenge is greatly appreciated, what did you like / don't like?

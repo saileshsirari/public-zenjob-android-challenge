@@ -1,6 +1,8 @@
 package com.zenjob.android.browsr.data
 
-import com.squareup.moshi.Json
+import com.google.gson.annotations.SerializedName
+import com.zenjob.android.browsr.Utils
+import com.zenjob.android.browsr.Utils.formatToDate
 import java.io.Serializable
 import java.util.*
 
@@ -9,6 +11,20 @@ data class Movie(
     val imdbId: String?,
     val overview: String?,
     val title: String,
-    @Json(name = "release_date") val releaseDate: Date?,
-    @Json(name = "vote_average") val voteAverage: Float?
-) : Serializable
+    @SerializedName( "poster_path") val posterPath: String? = null,
+    @SerializedName("release_date") val releaseDate: Date?,
+    @SerializedName("vote_average") val voteAverage: Float?
+) : Serializable {
+    var releaseDateFormatted: String? = null
+
+     fun format() {
+        releaseDate?.let {date->
+            try {
+                releaseDateFormatted =
+                    "${date.formatToDate(Utils.YYYY_MM_DD_DASH)}"
+            }catch (e:Exception){
+
+            }
+        }
+    }
+}

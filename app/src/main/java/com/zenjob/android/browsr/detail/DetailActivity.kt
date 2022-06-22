@@ -5,28 +5,25 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.zenjob.android.browsr.R
 import com.zenjob.android.browsr.data.Movie
+import com.zenjob.android.browsr.databinding.ActivityDetailBinding
+import com.zenjob.android.browsr.databinding.ActivityMovieDetailsBinding
 
 
 class DetailActivity : AppCompatActivity() {
 
-    val titleTv: TextView by lazy { findViewById<TextView>(R.id.title) }
-    val ratingTv: TextView by lazy { findViewById<TextView>(R.id.rating) }
-    val releaseDateTv: TextView by lazy { findViewById<TextView>(R.id.release_date) }
-    val descriptionTv: TextView by lazy { findViewById<TextView>(R.id.description) }
+    private lateinit var binding: ActivityMovieDetailsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail)
+        binding = ActivityMovieDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val movie = if (intent.hasExtra("movie")) intent.getSerializableExtra("movie") as Movie else null
-
         if(movie == null) return
+        binding.movie = movie
 
-        titleTv.text = movie.title
-        releaseDateTv.text =
-            android.text.format.DateFormat.format("yyyy", movie.releaseDate)
-        ratingTv.text = "${movie.voteAverage ?: 0}"
-        descriptionTv.text = movie.overview
+
+
     }
 
 }

@@ -1,4 +1,4 @@
-package com.zenjob.android.browsr.list
+package com.zenjob.android.browsr.movies
 
 import android.view.LayoutInflater
 import android.view.View
@@ -50,7 +50,7 @@ class MovieListAdapter : ListAdapter<Movie, MovieListAdapter.MovieViewHolder>(Mo
         fun bind(movie: Movie, listener: OnItemClickListener?) {
 
             titleTv.text = movie.title
-            releaseDateTv.text = android.text.format.DateFormat.format("yyyy", movie.releaseDate)
+        //    releaseDateTv.text = android.text.format.DateFormat.format("yyyy", movie.releaseDate)
             ratingTv.text = "${movie.voteAverage ?: 0}"
 
             itemView.setOnClickListener {
