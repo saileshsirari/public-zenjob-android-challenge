@@ -3,14 +3,12 @@ package com.zenjob.android.browsr.movies
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
-import com.zenjob.android.browsr.R
 import com.zenjob.android.browsr.data.Movie
 import com.zenjob.android.browsr.data.MovieAdapter
+import com.zenjob.android.browsr.databinding.ActivityMoviesBinding
 import com.zenjob.android.browsr.detail.DetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -18,26 +16,23 @@ import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MoviesActivity : AppCompatActivity() {
-
+    lateinit var binding: ActivityMoviesBinding
+        private set
     private val moviesViewModel: MoviesViewModel by viewModels()
     private var job: Job? = null
     private lateinit var adapter: MovieAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_movies)
-        val list: RecyclerView = findViewById(R.id.recylcer_view)
+        binding = ActivityMoviesBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         adapter = initMovieAdapter()
-        list.adapter = adapter
+        binding.recylcerView.adapter = adapter
         fetchMovies()
-        val refresh = findViewById<View>(R.id.refresh)
-        refresh.setOnClickListener {
-            fetchMovies()
+        binding.swipeRefresh.setOnRefreshListener {
+            binding.recylcerView.visibility = View.GONE
+            adapter.refresh()
+
         }
-    }
-
-
-    private fun showErrorMessage(e: Throwable) {
-        Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show()
     }
 
     private fun fetchMovies() {
@@ -46,6 +41,8 @@ class MoviesActivity : AppCompatActivity() {
             moviesViewModel.movies()
                 .collect {
                     adapter.submitData(it)
+                    binding.recylcerView.visibility = View.VISIBLE
+                    binding.swipeRefresh.isRefreshing = false
                 }
         }
     }
